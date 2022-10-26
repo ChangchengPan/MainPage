@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>测试</title>
+ <script src="https://cdn.bootcss.com/jsbarcode/3.8.0/JsBarcode.all.min.js"></script>
+<style>
+    #box{width: 100%;overflow-x: auto;}
+    .img-list{display: flex;width: 830px;}
+    .img-list .img-list-item{width: 500px;height: 250px;}
+    .img-list .img-list-item+ .img-list-item{margin-left: 200px;}
+    .img-list .img-list-item img{width: 200px;height: 200px;}
+</style>
+</head>
+<body>
+ <input type="text" id="content" placeholder="请输入后五位数"/>
+ <input type="button" id="autoIma" value="生成" onclick="CreateImas(0)"/>
+ <input type="button" id="plIma" value="批量生成" onclick="CreateImas(99)"/>
+ <div id="box"></div>
+ <script>
+  //生成条码
+  function CreateImas(n) {
+    var content = document.getElementById('content').value;
+    if (content == undefined || content == "") {
+        alert("请输入条码内容!");
+        return;
+    };
+   options = {
+        format: "CODE128",
+        displayValue: true,
+        fontSize: 18,
+        height: 100
+    };
+
+    var bc = document.getElementById('box');
+    var ul=document.createElement("ul");
+    ul.className="img-list";
+    bc.appendChild(ul);
+
+    for(let i=0;i<=n;i++){
+        var middle="0"+i;
+        if(n===0){
+            result=content;
+        }else{
+            var result=5202323+middle.substr(middle.length-2,2)+content;
+        }
+        var li=document.createElement("li");
+        li.className="img-list-item";
+        ul.appendChild(li);
+        var img=document.createElement("img");
+        li.appendChild(img);
+        JsBarcode(img, result, options);
+    }
+  }
+ </script>
+</body>
+</html>
